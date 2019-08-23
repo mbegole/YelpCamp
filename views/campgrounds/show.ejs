@@ -40,10 +40,12 @@
                             <span class="pull-right">10 days ago</span>
                             <p><%= comment.text %></p>
                         </div>
+                        <% if(currentUser && comment.author.id.equals(currentUser._id)) { %>
                         <a href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit" class="btn btn-xs btn-warning">Edit Comment</a>
                         <form action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE" id="delete-form" method="POST">
                             <button class="btn btn-xs btn-danger">Delete</button>
                         </form>
+                        <% } %>
                     </div>
                 <% }); %>
             </div>
