@@ -23,3 +23,9 @@
 #delete-form {
     display: inline;
 }
+
+#campground-card-div {
+    max-height: 150px;
+    overflow: hidden;
+    width: 100%;
+}
