@@ -2,6 +2,8 @@ var express = require("express");
 var fs = require("fs");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
+var Campground = require("./models/campground");
+var seeds = require("./seeds");
 var app = express();
 
 var config = JSON.parse(fs.readFileSync('./config.json', 'UTF-8'));
@@ -11,14 +13,7 @@ mongoose.connect(config.connectionString);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
-// SCHEMA SET UP
-var campgroundSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    description: String
-});
-
-var Campground = mongoose.model("Campground", campgroundSchema);
+seeds();
 
 app.get("/", function(req, res) {
     res.render("landing");
@@ -62,7 +57,7 @@ app.get("/campgrounds/new", function(req, res) {
 
 // Campgrounds SHOW
 app.get("/campgrounds/:id", function(req, res) {
-    var campground = Campground.findById(req.params.id, function(err, foundCampground) {
+    var campground = Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground) {
         if (err) {
             console.log(err);
         } else {
